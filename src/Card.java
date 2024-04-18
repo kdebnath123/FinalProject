@@ -1,3 +1,6 @@
+import javax.swing.*;
+import java.awt.*;
+
 // Kirin Debnath
 // Adapation from CardGame
 // Last updated: December 7th 2023
@@ -6,15 +9,18 @@ public class Card {
     // Instance variables
     private String rank;
     private String suit;
-    private int points;
+
+    private Image frontImage, backImage;
+
 
     // Card constructor
     // Each card has a rank, suit, and point value
-    public Card(String rank, String suit, int points){
+    public Card(String rank, String suit, int imageIndex){
         this.rank = rank;
         this.suit = suit;
-        this.points = points;
 
+        this.frontImage = new ImageIcon("Resources/Cards/" + imageIndex +".png").getImage();
+        this.backImage = new ImageIcon("Resources/Cards/back.png").getImage();
     }
 
     // Gets rank
@@ -35,16 +41,6 @@ public class Card {
     // Sets suit
     public void setSuit(String suit) {
         this.suit = suit;
-    }
-
-    // Gets points
-    public int getPoints() {
-        return points;
-    }
-
-    // Sets points
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     // ToString method for card class

@@ -1,19 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0553b6ff-074d-404c-abef-4edac5b9a262" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FinalProject.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Card.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Deck.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GameView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Round.java" afterDir="false" />
+    <list default="true" id="0553b6ff-074d-404c-abef-4edac5b9a262" name="Changes" comment="Initial commit w/outlines of classes. Card + Deck backend complete">
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/24.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/25.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/26.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/27.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/28.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/29.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/30.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/31.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/33.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/34.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/35.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/36.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/37.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/38.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/39.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/40.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/41.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/42.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/43.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/44.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/45.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/46.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/47.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/48.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/49.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/51.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/52.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/Cards/back.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Round.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Round.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,15 +86,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/kirindebnath/CS2/FinalProject/Resources",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Resources" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -59,6 +111,14 @@
       <option name="presentableId" value="Default" />
       <updated>1713304242138</updated>
     </task>
+    <task id="LOCAL-00001" summary="Initial commit w/outlines of classes. Card + Deck backend complete">
+      <created>1713404518755</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713404518755</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -71,5 +131,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit w/outlines of classes. Card + Deck backend complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit w/outlines of classes. Card + Deck backend complete" />
   </component>
 </project>

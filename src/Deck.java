@@ -5,22 +5,31 @@ import java.util.ArrayList;
 
 public class Deck {
 
+    public  static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"};
+    private static final String[] SUITS = {"Spades", "Hearts", "Diamonds", "Clubs"};
+
     // Instance variables to hold each card
     private ArrayList<Card> deck;
     //Number of cards left
     private int cardsLeft;
 
+    // TODO Remove main from deck
+    public static void main(String[] args) {
+        Deck deck = new Deck();
+        deck.printDeck();
+    }
+
     // Deck Constructor
-    public Deck(String[] rank, String[] suits, int[] points) {
+    public Deck() {
 
         this.deck = new ArrayList<Card>();
 
         // Creates deck with rank of every suit
-        for(String suit : suits) {
-            for (int i = 0; i < rank.length; i++) {
+        for(String rank : RANKS) {
+            for (String suit: SUITS) {
 
                 // Adds new card object to deck
-                deck.add(new Card(rank[i], suit, points[i]));
+                deck.add(new Card(rank, suit, deck.size()));
             }
         }
 
