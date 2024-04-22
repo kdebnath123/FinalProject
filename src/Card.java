@@ -28,20 +28,11 @@ public class Card {
         return rank;
     }
 
-    // Sets rank
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
-
     // Gets suit
     public String getSuit() {
         return suit;
     }
 
-    // Sets suit
-    public void setSuit(String suit) {
-        this.suit = suit;
-    }
 
     // ToString method for card class
     public String toString() {
