@@ -39,4 +39,9 @@ public class Card {
         return rank + " of " + suit;
     }
 
+    public Image getFrontImage(){
+        return frontImage;
+    }
+
+
 }

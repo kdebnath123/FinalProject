@@ -2,6 +2,8 @@ public class Game {
 
     private GameView window;
     private Round round;
+    private int roundNumber;
+    public static final int BIG_BLIND;
 
     Player[] players;
     Deck deck;
@@ -16,6 +18,7 @@ public class Game {
         players[0] = new Player("1", 1000);
         players[1] = new Player("2", 1000);
 
+        this.roundNumber = 0;
 
         this.round = new Round(players, deck);
 
@@ -32,8 +35,6 @@ public class Game {
         // Creates the viewer's window
         Game game = new Game();
         game.play();
-
-
     }
 
 }
