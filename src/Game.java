@@ -3,7 +3,8 @@ public class Game {
     private GameView window;
     private Round round;
     private int roundNumber;
-    public static final int BIG_BLIND;
+    public static final int BIG_BLIND = 250;
+    public static final int FOLD = 1, CHECK_CALL = 2, RAISE = 3;
 
     Player[] players;
     Deck deck;
