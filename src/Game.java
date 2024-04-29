@@ -2,9 +2,9 @@ public class Game {
 
     private GameView window;
     private Round round;
-    private int roundNumber;
-    public static final int BIG_BLIND = 250;
-    public static final int FOLD = 1, CHECK_CALL = 2, RAISE = 3;
+
+    public static final int BIG_BLIND = 100;
+    public static final int FOLD = -1, CHECK_CALL = 0;
 
     Player[] players;
     Deck deck;
@@ -14,12 +14,13 @@ public class Game {
     public Game(){
         this.deck = new Deck();
 
-        players = new Player[2];
+        players = new Player[4];
 
-        players[0] = new Player("1", 1000);
-        players[1] = new Player("2", 1000);
 
-        this.roundNumber = 0;
+        players[0] = new Player("SB", 1000);
+        players[1] = new Player("BB", 1000);
+        players[2] = new Player("UTG", 1000);
+        players[3] = new Player("B", 1000);
 
         this.round = new Round(players, deck);
 
@@ -28,7 +29,8 @@ public class Game {
     }
 
     public void play(){
-        window.repaint();
+        //window.repaint();
+        round.play();
     }
 
 

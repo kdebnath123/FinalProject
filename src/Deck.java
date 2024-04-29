@@ -13,12 +13,6 @@ public class Deck {
     //Number of cards left
     private int cardsLeft;
 
-    // TODO Remove main from deck
-    public static void main(String[] args) {
-        Deck deck = new Deck();
-        deck.printDeck();
-    }
-
     // Deck Constructor
     public Deck() {
 

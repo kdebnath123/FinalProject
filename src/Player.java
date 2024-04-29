@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Player {
     private String name;
     private int bank;
+    private int potInvestment;
     private Card[] holeCards;
     public static final int HOLE_NUM = 2;
 
@@ -28,6 +29,8 @@ public class Player {
 
     public int bet(int value){
         bank -= value;
+        potInvestment += value;
+
         return value;
     }
 
@@ -44,20 +47,22 @@ public class Player {
     }
 
 
+    // return amt to increase pot by
     public int action(int callAmount) {
 
         //TODO: impement keylistner
 
-        System.out.println(getName() + "'s action:");
 
-        if (callAmount > bank){
+
+        if (callAmount - potInvestment > bank){
             System.out.println("Invalid amount, auto folding");
             return Game.FOLD;
         }
 
         while(true){
 
-            System.out.println("Enter action: [F]old, [C]heck/[C]all, [R]aise ");
+            //System.out.println("Enter action: [F]old, [C]heck/[C]all, [R]aise ");
+            System.out.print(getName() + "'s action: ");
             String c = input.nextLine();
 
 
@@ -68,14 +73,13 @@ public class Player {
                     return Game.FOLD;
                 case "C":
 
-                    if (callAmount == 0){
-                        System.out.println(getName() + "Checks");
+                    if (callAmount == potInvestment){
+                        System.out.println(getName() + " Checks");
                     }
                     else {
-                        System.out.println(getName() + "Calls");
+                        System.out.println(getName() + " Calls for $" + (callAmount - potInvestment));
                     }
 
-                    bet(callAmount);
                     return Game.CHECK_CALL;
 
 
@@ -83,14 +87,18 @@ public class Player {
                 case "R":
                     int raiseAmount;
 
-                    // Forces user to input a number between Call Amount and bankroll
+                    if(callAmount + Game.BIG_BLIND > bank){
+                        System.out.println("Not enough $ to raise, auto-calling");
+                    }
+
+                    // Forces user to input a number between Call Amount + BB and bankroll
                     while (true) {
                         // Try/Catch learned from Stack Overflow
                         try {
-                            System.out.print("Raise a valid amount: ");
+                            System.out.print("Raise a valid amount (min raise BB): ");
                             raiseAmount = input.nextInt();
 
-                            if (raiseAmount > callAmount + 1 && raiseAmount <= bank) {
+                            if (raiseAmount >= Game.BIG_BLIND && raiseAmount <= bank - callAmount) {
                                 input.nextLine();
                                 break;
                             }
@@ -100,8 +108,18 @@ public class Player {
                         }
                     }
 
-                    return bet(raiseAmount);
+                    System.out.println(getName() + " Raises");
+                    return raiseAmount;
             }
         }
+    }
+
+
+    public int getPotInvestment() {
+        return potInvestment;
+    }
+
+    public String toString() {
+        return getName() + "'s hand: " + holeCards[0] + " / " + holeCards[1] + " @" + bank;
     }
 }
