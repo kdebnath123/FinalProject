@@ -9,15 +9,26 @@ public class Card {
     // Instance variables
     private String rank;
     private String suit;
+    private int score;
 
     private Image frontImage, backImage;
 
 
     // Card constructor
     // Each card has a rank, suit, and point value
-    public Card(String rank, String suit, int imageIndex){
+    public Card(String rank, String suit, int score){
         this.rank = rank;
         this.suit = suit;
+        this.score = score;
+
+        //this.frontImage = new ImageIcon("Resources/Cards/" + imageIndex +".png").getImage();
+        this.backImage = new ImageIcon("Resources/Cards/back.png").getImage();
+    }
+
+    public Card(String rank, String suit, int score, int imageIndex){
+        this.rank = rank;
+        this.suit = suit;
+        this.score = score;
 
         this.frontImage = new ImageIcon("Resources/Cards/" + imageIndex +".png").getImage();
         this.backImage = new ImageIcon("Resources/Cards/back.png").getImage();
@@ -33,6 +44,9 @@ public class Card {
         return suit;
     }
 
+    public int getScore() {
+        return score;
+    }
 
     // ToString method for card class
     public String toString() {

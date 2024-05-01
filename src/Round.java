@@ -63,6 +63,11 @@ public class Round {
         System.out.println("Pre-flop: " + pot);
     }
     public void flop(){
+
+        for (Player p: activePlayers){
+            p.resetPotInvestment();
+        }
+
         // Burn
         deck.deal();
 
@@ -82,6 +87,10 @@ public class Round {
 
     }
     public void turn(){
+
+        for (Player p: activePlayers){
+            p.resetPotInvestment();
+        }
         // Burn
         deck.deal();
 
@@ -99,6 +108,11 @@ public class Round {
 
     }
     public void river(){
+
+        for (Player p: activePlayers){
+            p.resetPotInvestment();
+        }
+
         // Burn
         deck.deal();
 

@@ -119,6 +119,10 @@ public class Player {
         return potInvestment;
     }
 
+    public void resetPotInvestment(){
+        potInvestment = 0;
+    }
+
     public String toString() {
         return getName() + "'s hand: " + holeCards[0] + " / " + holeCards[1] + " @" + bank;
     }

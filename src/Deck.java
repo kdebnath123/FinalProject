@@ -6,7 +6,11 @@ import java.util.ArrayList;
 public class Deck {
 
     public  static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"};
-    private static final String[] SUITS = {"Spades", "Hearts", "Diamonds", "Clubs"};
+    public static final String[] SUITS = {"Spades", "Hearts", "Diamonds", "Clubs"};
+
+    public static final int ACE = 14, JACK = 11, QUEEN = 12, KING = 13;
+
+    public static final int[] SCORE = {ACE, 2, 3, 4, 5, 6, 7, 8, 9, 10, JACK, QUEEN, KING};
 
     // Instance variables to hold each card
     private ArrayList<Card> deck;
@@ -19,11 +23,11 @@ public class Deck {
         this.deck = new ArrayList<Card>();
 
         // Creates deck with rank of every suit
-        for(String rank : RANKS) {
+        for(int i = 0; i < RANKS.length; i++) {
             for (String suit: SUITS) {
 
                 // Adds new card object to deck
-                deck.add(new Card(rank, suit, deck.size()));
+                deck.add(new Card(RANKS[i], suit, SCORE[i], deck.size()));
             }
         }
 
@@ -86,5 +90,8 @@ public class Deck {
         }
     }
 
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
 }
 
