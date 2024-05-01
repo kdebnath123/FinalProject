@@ -89,9 +89,5 @@ public class Deck {
             System.out.println(cards);
         }
     }
-
-    public ArrayList<Card> getDeck() {
-        return deck;
-    }
 }
 

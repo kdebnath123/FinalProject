@@ -1,4 +1,5 @@
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -6,8 +7,7 @@ public class Player {
     private String name;
     private int bank;
     private int potInvestment;
-    private Card[] holeCards;
-    public static final int HOLE_NUM = 2;
+    private ArrayList<Card> holeCards;
 
     private Scanner input;
 
@@ -15,16 +15,15 @@ public class Player {
     public Player(String name, int chips) {
         this.name = name;
         this.bank = chips;
-        this.holeCards = new Card[HOLE_NUM];
+        this.holeCards = new ArrayList<>();
 
         //TODO: remove
         this.input = new Scanner(System.in);
     }
 
 
-    public void receiveCards(Card first, Card second) {
-        holeCards[0] = first;
-        holeCards[1] = second;
+    public void receiveCards(Card card) {
+        holeCards.add(card);
     }
 
     public int bet(int value){
@@ -42,7 +41,7 @@ public class Player {
     public int getChips() {
         return bank;
     }
-    public Card[] getHoleCards() {
+    public ArrayList<Card> getHoleCards() {
         return holeCards;
     }
 
@@ -124,6 +123,14 @@ public class Player {
     }
 
     public String toString() {
-        return getName() + "'s hand: " + holeCards[0] + " / " + holeCards[1] + " @" + bank;
+        return getName() + "'s hand: " + holeCards.getFirst() + " / " + holeCards.getLast() + " @" + bank;
+    }
+
+    public void clearHoleCards() {
+        holeCards.clear();
+    }
+
+    public void addChips(int value) {
+        bank += value;
     }
 }

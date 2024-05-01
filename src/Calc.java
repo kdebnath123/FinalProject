@@ -1,12 +1,6 @@
 import java.util.ArrayList;
 
 public class Calc {
-
-        private ArrayList<Card> total;
-        private ArrayList<ArrayList<Card>> ordered;
-
-        public static final int COMBO_NUM = 21;
-
         public static final int ROYAL_FLUSH = 90000,
                                 STRAIGHT_FLUSH = 80000,
                                 QUADS = 70000,
@@ -19,46 +13,52 @@ public class Calc {
 
         public static final int MISS = -1, AS_PRIMARY = 100, AS_SECONDARY = 1;
 
+        // TODO: REMOVE TEST METHOD
         public static void main(String[] args) {
 
-                // create all 5 choose 7 hands
-                // for each hand
+                ArrayList<Card> possibleHole = new ArrayList<>();
+                ArrayList<Card> possibleCommunity = new ArrayList<>();
 
-                Calc c = new Calc();
-
-                ArrayList<Card> test = new ArrayList<>();
-
-
-                test.add(new Card("8", Deck.SUITS[1], 8));|
-                test.add(new Card("7", Deck.SUITS[1], 7));
-                test.add(new Card("6", Deck.SUITS[0], 6));
-                test.add(new Card("5", Deck.SUITS[0], 5));
-                test.add(new Card("4", Deck.SUITS[0], 4));
-                test.add(new Card("3", Deck.SUITS[0], 3));
-                test.add(new Card("2", Deck.SUITS[0], 2));
-
+                /* // TEST WITH CERTIAN HAN
+                possibleHole.add(new Card("8", Deck.SUITS[1], 8));
+                possibleHole.add(new Card("7", Deck.SUITS[1], 7));
+                possibleCommunity.add(new Card("6", Deck.SUITS[0], 6));
+                possibleCommunity.add(new Card("5", Deck.SUITS[0], 5));
+                possibleCommunity.add(new Card("4", Deck.SUITS[0], 4));
+                possibleCommunity.add(new Card("3", Deck.SUITS[0], 3));
+                possibleCommunity.add(new Card("2", Deck.SUITS[0], 2));
+                */
 
                 Deck deck = new Deck();
                 deck.shuffle();
 
-/*
-                for (int i = 0; i < 7; i++) {
-                        test.add(deck.deal());
-                        }
- */
 
-                //SORT
-                test = c.sort(test);
-                System.out.println(test);
-                System.out.println("~~~~~~~~");
+                for (int i = 0; i < 5; i++) {
+                        possibleCommunity.add(deck.deal());
+                }
+                possibleHole.add(deck.deal());
+                possibleHole.add(deck.deal());
 
-                //Find all 5 card combinations
-                ArrayList<ArrayList<Card>> combinations = c.sevenChooseFive(test);
+                int result = Calc.evalPlayer(possibleHole, possibleCommunity);
 
-                // Calc Score for each combination
+        }
+
+        public static int evalPlayer(ArrayList<Card> hole, ArrayList<Card> community){
+                //Combine hole and community cards
+                ArrayList<Card> total = new ArrayList<>();
+                total.addAll(hole);
+                total.addAll(community);
+
+                //Sort the seven card hand
+                total = Calc.sort(total);
+
+                //Find all 5 card combinations from 7 card hand
+                ArrayList<ArrayList<Card>> combinations = Calc.createCombinations(total);
+
+                // Calc Score for each 5 card hand
                 ArrayList<Integer> scores = new ArrayList<>();
                 for (ArrayList<Card> fiveCard: combinations) {
-                        scores.add(c.calcValue(fiveCard));
+                        scores.add(Calc.calcValue(fiveCard));
                 }
 
                 // Find the max possible score
@@ -68,27 +68,13 @@ public class Calc {
                                 max = score;
                         }
                 }
-                System.out.println("Combo Value: " + max);
-
-
-
-
-
-                // Value with 7 cards
-                System.out.println("7 Card Value: " + c.calcValue(test));
-
-
-
+                return max;
         }
 
+        private static ArrayList<ArrayList<Card>> createCombinations(ArrayList<Card> SevenCard){
 
+                ArrayList<ArrayList<Card>> ordered = new ArrayList<>();
 
-        public ArrayList<ArrayList<Card>> sevenChooseFive(ArrayList<Card> SevenCard){
-
-                ordered = new ArrayList<>();
-
-
-                int counter = 0;
                 for(int i = 0, n = SevenCard.size(); i < n; i++){
                         for(int j = i + 1; j < n; j++){
                                 ArrayList<Card> temp = new ArrayList<>(SevenCard);
@@ -101,29 +87,16 @@ public class Calc {
                 return ordered;
         }
 
-
-
-
-
-
-
-
-
-
-
-        public Calc(){
-        }
-
-        public ArrayList<Card> sort(ArrayList<Card> sevenCard){
+        private static ArrayList<Card> sort(ArrayList<Card> sevenCard){
                 return mergeSort(sevenCard, 0, sevenCard.size() - 1);
 
         }
         /*** Implementation of merge sort on an ArrayList of Cards ***/
-        public ArrayList<Card> mergeSort(ArrayList<Card> arr, int left, int right) {
+        private static ArrayList<Card> mergeSort(ArrayList<Card> arr, int left, int right) {
 
                 // Base case when only one element
                 if (right - left == 0) {
-                        ArrayList<Card> newArr = new ArrayList<Card>();
+                        ArrayList<Card> newArr = new ArrayList<>();
                         newArr.add(arr.get(left));
                         return newArr;
                 }
@@ -138,9 +111,9 @@ public class Calc {
         }
 
         /*** Merges two sorted Array List of Cards into sorted ArrayList of Cards ***/
-        public ArrayList<Card> merge(ArrayList<Card> arr1, ArrayList<Card> arr2) {
+        private static ArrayList<Card> merge(ArrayList<Card> arr1, ArrayList<Card> arr2) {
 
-                ArrayList<Card> merged = new ArrayList<Card>();
+                ArrayList<Card> merged = new ArrayList<>();
 
                 int a = 0, b = 0;
 
@@ -169,19 +142,7 @@ public class Calc {
         }
 
 
-
-        public int calcValue(ArrayList<Card> fiveCard){
-                // take in a seven card hand
-
-
-                // create all 5 choose 7 hands
-
-
-                // for each hand
-
-
-                // Sort the hand from highest to lowest
-
+        private static int calcValue(ArrayList<Card> fiveCard){
                 // check for straight flush or royal
                 int result = hasStraightOrRoyalFlush(fiveCard);
                 if(result != MISS){
@@ -239,7 +200,7 @@ public class Calc {
          * Exists when player has a flush and straight
          * Royal iff Ace high straight + flush
          * **/
-        private int hasStraightOrRoyalFlush(ArrayList<Card> total) {
+        private static int hasStraightOrRoyalFlush(ArrayList<Card> total) {
 
 
                 if (hasFlush(total) == MISS){
@@ -266,7 +227,7 @@ public class Calc {
         }
 
         /*** works **/
-        private int hasQuads(ArrayList<Card> total) {
+        private static int hasQuads(ArrayList<Card> total) {
 
                 int tripsResult = hasTrips(total);
                 int tripsCard = (tripsResult / 100) % 100;
@@ -288,7 +249,7 @@ public class Calc {
         }
 
 
-        private int hasFullHouse(ArrayList<Card> total) {
+        private static int hasFullHouse(ArrayList<Card> total) {
 
                 // Check for trips
                 int tripsResult = hasTrips(total);
@@ -312,7 +273,7 @@ public class Calc {
         }
 
         /** Works **/
-        private int hasFlush(ArrayList<Card> total) {
+        private static int hasFlush(ArrayList<Card> total) {
 
                 String neededSuit = total.get(0).getSuit();
 
@@ -325,7 +286,7 @@ public class Calc {
                 return FLUSH + total.getFirst().getScore() * AS_PRIMARY;
         }
         /** Works **/
-        private int hasStraight(ArrayList<Card> total) {
+        private static int hasStraight(ArrayList<Card> total) {
                 int highCard = total.get(0).getScore();
 
                 for (Card c: total) {
@@ -338,7 +299,7 @@ public class Calc {
                 return STRAIGHT + (total.getFirst().getScore() * AS_PRIMARY);
         }
         /** Works **/
-        private int hasTrips(ArrayList<Card> total) {
+        private static int hasTrips(ArrayList<Card> total) {
 
                 for(int i = 0, n = total.size() - 2; i < n; i++){
 
@@ -354,7 +315,7 @@ public class Calc {
                 return MISS;
         }
         /** Works **/
-        private int hasTwoPair(ArrayList<Card> total) {
+        private static int hasTwoPair(ArrayList<Card> total) {
 
                 // Check for pair
                 int fistPairResult = hasPair(total);
@@ -377,8 +338,8 @@ public class Calc {
                 return TWO_PAIR + (firstPairCard * AS_PRIMARY) + (secondPairCard * AS_SECONDARY);
         }
 
-        /** Returns highest pair found **/
-        private int hasPair(ArrayList<Card> total) {
+        /** Returns the highest pair found **/
+        private static int hasPair(ArrayList<Card> total) {
                 for(int i = 0, n = total.size() - 1; i < n; i++){
 
                         if(total.get(i).getScore() == total.get(i + 1).getScore()){
@@ -390,7 +351,7 @@ public class Calc {
                 return MISS;
         }
 
-        private int hasHighCard(ArrayList<Card> total) {
+        private static int hasHighCard(ArrayList<Card> total) {
 
                 if(total.isEmpty()){
                         return 0;
@@ -403,7 +364,7 @@ public class Calc {
          * Removes all instances of a given card
          * @return
          */
-        private ArrayList<Card> removeInstance(ArrayList<Card> total, int toRemove) {
+        private static ArrayList<Card> removeInstance(ArrayList<Card> total, int toRemove) {
 
                 ArrayList<Card> removed = new ArrayList<>();
 

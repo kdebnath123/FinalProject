@@ -12,17 +12,16 @@ public class Game {
     // TODO: once each round is finished then move up to game
 
     public Game(){
-        this.deck = new Deck();
 
         players = new Player[4];
 
+        players[0] = new Player("B", 1000);
+        players[1] = new Player("SB", 1000);
+        players[2] = new Player("BB", 1000);
+        players[3] = new Player("UTG", 1000);
 
-        players[0] = new Player("SB", 1000);
-        players[1] = new Player("BB", 1000);
-        players[2] = new Player("UTG", 1000);
-        players[3] = new Player("B", 1000);
 
-        this.round = new Round(players, deck);
+        this.round = new Round(players);
 
 
         this.window = new GameView(this);

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0553b6ff-074d-404c-abef-4edac5b9a262" name="Changes" comment="Implemented player actions, and all three streets of betting.">
-      <change afterPath="$PROJECT_DIR$/src/Calc.java" afterDir="false" />
+    <list default="true" id="0553b6ff-074d-404c-abef-4edac5b9a262" name="Changes" comment="completed calc class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Calc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Calc.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Round.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Round.java" afterDir="false" />
     </list>
@@ -54,16 +54,9 @@
       <recent name="$PROJECT_DIR$/Resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Calc">
+  <component name="RunManager" selected="Application.Game">
     <configuration name="Calc" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Calc" />
-      <module name="FinalProject" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Combination" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Combination" />
       <module name="FinalProject" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -78,9 +71,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Calc" />
-        <item itemvalue="Application.Combination" />
         <item itemvalue="Application.Game" />
+        <item itemvalue="Application.Calc" />
       </list>
     </recent_temporary>
   </component>
@@ -135,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1714373001212</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="completed calc class">
+      <created>1714548165816</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1714548165816</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -155,6 +154,7 @@
     <MESSAGE value="Got front end to display" />
     <MESSAGE value="Implemented player actions and pre-flop actions" />
     <MESSAGE value="Implemented player actions, and all three streets of betting." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented player actions, and all three streets of betting." />
+    <MESSAGE value="completed calc class" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed calc class" />
   </component>
 </project>
