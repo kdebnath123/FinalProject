@@ -26,12 +26,13 @@ public class Round {
 
     public void play(){
 
-
-
-        deck.shuffle();
         deal();
-
         preFlop();
+        //flop();
+        //turn();
+        //river();
+        //showdown();
+
 
     }
 
@@ -49,18 +50,14 @@ public class Round {
             activePlayers.get(i).receiveCards(deck.deal());
             activePlayers.get(i).receiveCards(deck.deal());
         }
-
-        for(Player p: activePlayers){
-            System.out.println(p);
-        }
-
-
     }
 
 
     public void preFlop(){
         // Starting with UTG give each player the action, allow each player to see their cards
         tableAction(Game.BIG_BLIND, UTG);
+
+        System.out.println(activePlayers);
 
         System.out.println("Pre-flop: " + pot);
     }
@@ -132,6 +129,9 @@ public class Round {
 
     }
 
+    private void showdown() {
+    }
+
 
     // Remove the first element of the array and move to last position which shifts everything, saves many many math operonds
     public void moveButton(){
@@ -150,6 +150,7 @@ public class Round {
 
             if(activePlayers.size() == 1){
                 winsHand(activePlayers.getFirst());
+                return;
             }
 
 
@@ -191,11 +192,14 @@ public class Round {
             p.clearHoleCards();
         }
         community.clear();
+        deck.shuffle();
 
     }
 
     // Controls what happens when someone wins
     private void winsHand(Player winner) {
         winner.addChips(pot);
+        System.out.println("Winner:" + winner.getName());
+        return;
     }
 }
