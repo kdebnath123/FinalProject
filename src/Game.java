@@ -28,8 +28,19 @@ public class Game {
     }
 
     public void play(){
+
+        round.reset();
+
+        round.deal();
+        round.preFlop();
+
+        round.flop();
         //window.repaint();
-        round.play();
+
+        round.turn();
+        round.river();
+        round.showdown();
+
     }
 
 

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class Round {
 
@@ -21,19 +22,7 @@ public class Round {
         this.deck = new Deck();
         community = new ArrayList<Card>();
 
-        reset();
-    }
-
-    public void play(){
-
-        deal();
-        preFlop();
-        //flop();
-        //turn();
-        //river();
-        //showdown();
-
-
+        //reset();
     }
 
     public void deal(){
@@ -49,6 +38,7 @@ public class Round {
         for (int i = 0; i < activePlayers.size(); i++) {
             activePlayers.get(i).receiveCards(deck.deal());
             activePlayers.get(i).receiveCards(deck.deal());
+            System.out.println(activePlayers.get(i));
         }
     }
 
@@ -56,8 +46,6 @@ public class Round {
     public void preFlop(){
         // Starting with UTG give each player the action, allow each player to see their cards
         tableAction(Game.BIG_BLIND, UTG);
-
-        System.out.println(activePlayers);
 
         System.out.println("Pre-flop: " + pot);
     }
@@ -76,9 +64,7 @@ public class Round {
 
         System.out.println("Flop:");
 
-        for(Card c : community){
-            System.out.println(c);
-        }
+        System.out.println(community);
 
         tableAction(0, SB);
 
@@ -97,9 +83,7 @@ public class Round {
 
         System.out.println("Turn:");
 
-        for(Card c : community){
-            System.out.println(c);
-        }
+        System.out.println(community);
 
         tableAction(0, SB);
 
@@ -119,9 +103,7 @@ public class Round {
 
         System.out.println("River:");
 
-        for(Card c : community){
-            System.out.println(c);
-        }
+        System.out.println(community);
 
         tableAction(0, SB);
 
@@ -129,10 +111,31 @@ public class Round {
 
     }
 
-    private void showdown() {
+    public void showdown() {
+
+        int max = Calc.MISS;
+        // calc each player and find the best one
+        for (Player p: activePlayers) {
+            max = Math.max(p.calcHandStrength(community), max);
+            System.out.println(p.getHoleCards());
+            System.out.println(p.getName() + " has " + p.getHandStrength());
+        }
+
+        System.out.println("Max hand: " + max);
+
+        int numWinners = 0;
+        for (Player p: activePlayers) {
+            if(p.getHandStrength() == max){
+                numWinners++;
+            }
+        }
+
+        for (Player p: activePlayers) {
+            if(p.getHandStrength() == max){
+                winsHand(p, pot / numWinners);
+            }
+        }
     }
-
-
     // Remove the first element of the array and move to last position which shifts everything, saves many many math operonds
     public void moveButton(){
         activePlayers.add(activePlayers.remove(SB));
@@ -145,16 +148,18 @@ public class Round {
 
 
         // Starting with given player give, each player the action
-        int i = 0;
-        while (i < activePlayers.size()) {
+
+        int currentSeat = startingPlayer;
+        for (int i = 0, n = activePlayers.size(); i < n; i++) {
+
 
             if(activePlayers.size() == 1){
-                winsHand(activePlayers.getFirst());
+                winsHand(activePlayers.getFirst(), pot);
                 return;
             }
 
 
-            int currentSeat = (i + startingPlayer) % activePlayers.size();
+            currentSeat = (currentSeat) % activePlayers.size();
             Player currentPlayer = activePlayers.get(currentSeat);
 
 
@@ -168,7 +173,7 @@ public class Round {
 
                 case Game.CHECK_CALL:
                     pot += currentPlayer.bet(callAmount - currentPlayer.getPotInvestment());
-                    i++;
+                    currentSeat++;
                     break;
 
                 default:
@@ -197,9 +202,9 @@ public class Round {
     }
 
     // Controls what happens when someone wins
-    private void winsHand(Player winner) {
-        winner.addChips(pot);
+    private void winsHand(Player winner, int amount) {
+        winner.addChips(amount);
         System.out.println("Winner:" + winner.getName());
-        return;
     }
+
 }

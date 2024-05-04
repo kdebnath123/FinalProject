@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Player {
     private String name;
     private int bank;
+    private int handStrength;
     private int potInvestment;
     private ArrayList<Card> holeCards;
 
@@ -132,5 +133,15 @@ public class Player {
 
     public void addChips(int value) {
         bank += value;
+    }
+
+
+    public int getHandStrength() {
+        return handStrength;
+    }
+
+    public int calcHandStrength(ArrayList<Card> community) {
+        handStrength = Calc.evalPlayer(holeCards, community);
+        return handStrength;
     }
 }

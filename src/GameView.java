@@ -69,7 +69,7 @@ public class GameView extends JFrame {
 
             g.drawImage(back, deck_x, cards_y, test_width, test_height, this);
 
-            for (int i = 0; i < 5; i++){
+            for (int i = 0; i < 3; i++){
                 g.drawImage(test_card, test_x + (i * (buffer_x + test_width)), cards_y, test_width, test_height, this);
 
                 if(i == 5){
