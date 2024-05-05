@@ -2,6 +2,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 public class Round {
 
@@ -11,7 +12,7 @@ public class Round {
     private ArrayList<Player> activePlayers;
     private ArrayList<Card> community;
 
-    public static final int B = 0, SB = 1, BB = 2, UTG =3;
+    public static final int B = 3, SB = 0, BB = 1, UTG =2;
     private Deck deck;
 
     public Round(Player[] players) {
@@ -23,7 +24,7 @@ public class Round {
         deck = new Deck();
     }
 
-    public void deal(){
+    /*public void deal(){
 
         System.out.println("Now dealing:");
 
@@ -38,15 +39,15 @@ public class Round {
             activePlayers.get(i).receiveCards(deck.deal());
             System.out.println(activePlayers.get(i));
         }
-    }
+    }*/
 
 
-    public void preFlop(){
+    /*public void preFlop(){
         // Starting with UTG give each player the action, allow each player to see their cards
         tableAction(Game.BIG_BLIND, UTG);
 
         System.out.println("Pre-flop: " + pot);
-    }
+    }*/
     public void flop(){
 
         for (Player p: activePlayers){
@@ -64,7 +65,7 @@ public class Round {
 
         System.out.println(community);
 
-        tableAction(0, SB);
+        //tableAction(0, SB);
 
         System.out.println("Total Pot:" + pot);
 
@@ -83,7 +84,7 @@ public class Round {
 
         System.out.println(community);
 
-        tableAction(0, SB);
+        //tableAction(0, SB);
 
         System.out.println("Total Pot:" + pot);
 
@@ -103,7 +104,7 @@ public class Round {
 
         System.out.println(community);
 
-        tableAction(0, SB);
+        //tableAction(0, SB);
 
         System.out.println("Total Pot:" + pot);
 
@@ -140,11 +141,11 @@ public class Round {
     }
 
     /*** given a starting position and call amount, go around the table and allow each player to check/call/raise ***/
-    public void tableAction (int callAmount, int startingPlayer){
+    /*public void tableAction (int callAmount, int startingPlayer){
 
 
+        System.out.println("in round");
         System.out.println(callAmount + " to stay-in");
-
 
         // Starting with given player give, each player the action
 
@@ -183,6 +184,8 @@ public class Round {
         }
     }
 
+     */
+
     public void reset(){
         activePlayers.clear();
         activePlayers.addAll(Arrays.asList(permanentPlayers));
@@ -215,6 +218,10 @@ public class Round {
         return pot;
     }
 
+    public void increasePot(int value){
+        pot += value;
+    }
+
     public ArrayList<Card> getCommunity() {
         return community;
     }
@@ -223,7 +230,12 @@ public class Round {
         return deck;
     }
 
-    public void addWindow(GameView window){
-        this.window = window;
+
+    public void resetPlayers(Player[] players) {
+        activePlayers.addAll(List.of(players));
+    }
+
+    public void resetPot() {
+        pot = 0;
     }
 }

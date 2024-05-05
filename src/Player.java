@@ -2,7 +2,6 @@ import java.awt.*;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Player {
     private String name;
@@ -10,8 +9,6 @@ public class Player {
     private int handStrength;
     private int potInvestment;
     private ArrayList<Card> holeCards;
-
-    private Scanner input;
     private int x, y;
 
     private boolean hastheAction = false;
@@ -24,9 +21,6 @@ public class Player {
         this.name = name;
         this.bank = chips;
         this.holeCards = new ArrayList<>();
-
-        //TODO: remove
-        this.input = new Scanner(System.in);
 
     }
 
@@ -56,7 +50,9 @@ public class Player {
 
 
     // return amt to increase pot by
-    public int action(int callAmount) {
+    public int action(int callAmount, String c) {
+
+
 
         //TODO: impement keylistner
 
@@ -69,14 +65,12 @@ public class Player {
 
             //System.out.println("Enter action: [F]old, [C]heck/[C]all, [R]aise ");
             System.out.print(getName() + "'s action: ");
-            String c = input.nextLine();
 
 
             switch (c){
 
                 case "F":
                     System.out.println(getName() + " Folded");
-                    hastheAction = false;
                     return Game.FOLD;
                 case "C":
 
@@ -86,14 +80,13 @@ public class Player {
                     else {
                         System.out.println(getName() + " Calls for $" + (callAmount - potInvestment));
                     }
-                    hastheAction = false;
                     return Game.CHECK_CALL;
 
 
 
                 case "R":
-                    int raiseAmount;
-
+                    int raiseAmount = 100;
+                    /*
                     if(callAmount + Game.BIG_BLIND > bank){
                         System.out.println("Not enough $ to raise, auto-calling");
                     }
@@ -115,13 +108,20 @@ public class Player {
                         }
                     }
 
+                     */
+
                     System.out.println(getName() + " Raises");
-                    hastheAction = false;
                     return raiseAmount;
             }
         }
     }
 
+    public boolean hasTheAction() {
+        return hastheAction;
+    }
+    public void setTheAction(boolean action) {
+        hastheAction = action;
+    }
 
     public int getPotInvestment() {
         return potInvestment;
@@ -143,6 +143,9 @@ public class Player {
         bank += value;
     }
 
+    public int getBank() {
+        return bank;
+    }
 
     public int getHandStrength() {
         return handStrength;
@@ -156,7 +159,6 @@ public class Player {
     public void drawPlayer(Graphics g, GameView view){
 
         g.drawString(name + " @ " + bank, x, y);
-
 
         for (int i = 0; i < holeCards.size(); i++){
             if(hastheAction) {

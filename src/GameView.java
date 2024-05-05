@@ -41,16 +41,14 @@ public class GameView extends JFrame{
     public void paint(Graphics g) {
         // New Game Screen
         // Resets background
+
+
         g.setColor(Color.white);
-
-
 
         //g.drawImage(background, 0, 0,WINDOW_WIDTH, WINDOW_HEIGHT, this);
 
         //Draw the deck
        // g.drawImage(back, deck_x, cards_y, test_width, test_height, this);
-
-
 
         switch (game.getState()){
 
@@ -61,6 +59,9 @@ public class GameView extends JFrame{
                 paintDeal(g);
                 break;
             case Game.PRE_FLOP:
+                paintBoard(g);
+                paintStreet(g, game.getState());
+                break;
             case Game.FLOP:
             case Game.TURN:
             case Game.RIVER:
@@ -69,29 +70,7 @@ public class GameView extends JFrame{
             case Game.SHOWDOWN:
                 paintShowdown(g);
                 break;
-
-
         }
-
-        //Pre-flop
-        //paintPF(g);
-
-
-        // Flop
-
-        // Turn
-
-        // River
-
-
-        // Background
-
-        // Community cards
-
-        // Pot
-
-        // Hole cards depending on player
-
 
     }
 
@@ -105,9 +84,8 @@ public class GameView extends JFrame{
 
     private void paintDeal(Graphics g) {
         paintBoard(g);
-
     }
-    private void paintStreet(Graphics g, int state) {
+    private void paintStreet(Graphics g, int gameState) {
         paintBoard(g);
     }
     private void paintShowdown(Graphics g) {
@@ -138,7 +116,6 @@ public class GameView extends JFrame{
 
 
         for (Player p: activePlayers) {
-
             p.drawPlayer(g, this);
         }
 
@@ -157,8 +134,6 @@ public class GameView extends JFrame{
 
         g.setColor(Color.WHITE);
         g.drawString(toPrint, (WINDOW_WIDTH -  str_length) / 2, y);
-
-
     }
 
 
