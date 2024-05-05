@@ -11,7 +11,9 @@ public class Card {
     private String suit;
     private int score;
 
-    private Image frontImage, backImage;
+    private Image frontImage;
+    private static Image backImage;
+    public static int WIDTH = 47, HEIGHT = 70;
 
 
     // Card constructor
@@ -21,7 +23,6 @@ public class Card {
         this.suit = suit;
         this.score = score;
 
-        //this.frontImage = new ImageIcon("Resources/Cards/" + imageIndex +".png").getImage();
         this.backImage = new ImageIcon("Resources/Cards/back.png").getImage();
     }
 
@@ -53,9 +54,14 @@ public class Card {
         return rank + " of " + suit;
     }
 
-    public Image getFrontImage(){
-        return frontImage;
+    public void drawCard(Graphics g, int x, int y, GameView view){
+        g.drawImage(frontImage, x,y, WIDTH, HEIGHT, view);
     }
+    public static void drawFaceDown(Graphics g, int x, int y, GameView view){
+        g.drawImage(backImage, x,y, WIDTH, HEIGHT, view);
+    }
+
+
 
 
 }

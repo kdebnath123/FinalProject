@@ -1,36 +1,36 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
-public class GameView extends JFrame {
+
+public class GameView extends JFrame{
 
 
     /** Window attributes **/
     public static final int WINDOW_HEIGHT= 540, WINDOW_WIDTH = 960,
-            X_OFFSET = 50, Y_OFFSET = 75,
-            LINE_HEIGHT = 25,
+            DECK_X = 300, CARDS_Y = 233,
+            FIRST_CARD_X = 353, BUFFER = 5;
 
-    deck_x = 300,
-    test_x = 353, cards_y = 233, test_width = 47, test_height = 70, buffer_x = 5;
-
+    public static final int TEXT_HEIGHT = 16;
 
     public static final String TITLE = "Poker";
 
     /** Background image **/
-    private Image background, test_card, back;
+    private Image background, cardBack;
 
     /** Shared data **/
-    private Game g;
+    private Game game;
+    private Round round;
 
-    public GameView(Game g) {
+    public GameView(Game game, Round round) {
 
         // Initialize instance variables.
-        this.g = g;
+        this.game = game;
+        this.round = round;
         this.background = new ImageIcon("Resources/Poker BG.png").getImage();
-        this.test_card = new ImageIcon("Resources/Cards/1.png").getImage();
-        this.back = new ImageIcon("Resources/Cards/back.png").getImage();
+        this.cardBack = new ImageIcon("Resources/Cards/back.png").getImage();
 
-        // Set-up the window and the buffer strategy.
+        // Set up the window and the buffer strategy.
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle(TITLE);
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -39,8 +39,42 @@ public class GameView extends JFrame {
     }
 
     public void paint(Graphics g) {
+        // New Game Screen
+        // Resets background
+        g.setColor(Color.white);
+
+
+
+        //g.drawImage(background, 0, 0,WINDOW_WIDTH, WINDOW_HEIGHT, this);
+
+        //Draw the deck
+       // g.drawImage(back, deck_x, cards_y, test_width, test_height, this);
+
+
+
+        switch (game.getState()){
+
+            case Game.NEW_ROUND:
+                paintNewGameScreen(g);
+                break;
+            case Game.DEAL:
+                paintDeal(g);
+                break;
+            case Game.PRE_FLOP:
+            case Game.FLOP:
+            case Game.TURN:
+            case Game.RIVER:
+                paintStreet(g, game.getState());
+                break;
+            case Game.SHOWDOWN:
+                paintShowdown(g);
+                break;
+
+
+        }
+
         //Pre-flop
-        paintPF(g);
+        //paintPF(g);
 
 
         // Flop
@@ -57,72 +91,75 @@ public class GameView extends JFrame {
         // Pot
 
         // Hole cards depending on player
+
+
     }
 
+    private void paintNewGameScreen(Graphics g) {
 
 
-    public void paintPF(Graphics g){
+        g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-            // Resets background
-            g.setColor(Color.WHITE);
-            g.drawImage(background, 0, 0,WINDOW_WIDTH, WINDOW_HEIGHT, this);
+        paintStringInBox(g, "[N]ew Game", (int)(WINDOW_HEIGHT * .75), 25);
+    }
 
-            g.drawImage(back, deck_x, cards_y, test_width, test_height, this);
+    private void paintDeal(Graphics g) {
+        paintBoard(g);
 
-            for (int i = 0; i < 3; i++){
-                g.drawImage(test_card, test_x + (i * (buffer_x + test_width)), cards_y, test_width, test_height, this);
+    }
+    private void paintStreet(Graphics g, int state) {
+        paintBoard(g);
+    }
+    private void paintShowdown(Graphics g) {
+    }
 
-                if(i == 5){
-                    //String test = test_x + (i * (buffer_x + test_width))
-                    //g.drawString(test, 100, 100, this);
-                }
+    public void paintBoard(Graphics g){
 
-            }
-
-            // Draws instructions once
-            /*if(g.isFirstTime()) {
-                g.drawString("Welcome to close the box.", X_OFFSET, Y_OFFSET );
-                g.drawString("Each turn roll 2 dice, and sum the numbers.", X_OFFSET, Y_OFFSET + LINE_HEIGHT);
-                g.drawString("Then 'shut' any combination of boxes that adds to the sum.", X_OFFSET, Y_OFFSET + 2* LINE_HEIGHT);
-                g.drawString("Try to get the lowest score.", X_OFFSET, Y_OFFSET + 3* LINE_HEIGHT);
-                g.drawString("Input to confirm.", X_OFFSET, Y_OFFSET + 4* LINE_HEIGHT);
-                return;
-            }
+        //Paint bg
+        g.setColor(Color.WHITE);
+        g.drawImage(background, 0, 0,WINDOW_WIDTH, WINDOW_HEIGHT, this);
 
 
-            // Draw dice
-            diceOne.draw(g, this);
-            diceTwo.draw(g, this);
+        //Paint Deck
+        Card.drawFaceDown(g, DECK_X, CARDS_Y, this);
 
-            // Draw each box
-            for (Box b: boxes) {
-                b.draw(g, this);
-            }
 
-            // Won/Loss screen
-            if(d.hasWon()) {
-                g.drawString("YOU CLEARED THE BOARD GOOD JOB!", X_OFFSET, Y_OFFSET);
-                g.drawString("YOU WON!!!!", X_OFFSET, Y_OFFSET + LINE_HEIGHT);
-                return;
-            }
-            if(d.hasLost()) {
-                g.drawString("No More Possible moves :(", (int)(WIDTH / 3.0), HEIGHT - Y_OFFSET + LINE_HEIGHT);
-                g.drawString("FINAL SCORE: " + d.getScore(), WIDTH - 4*(X_OFFSET), HEIGHT - Y_OFFSET + LINE_HEIGHT);
-                return;
-            }
 
-            // Only displays if sum/score game is in progress
-            g.drawString("SUM: "+ d.getSum(), X_OFFSET, HEIGHT - Y_OFFSET + LINE_HEIGHT);
-            g.drawString("SCORE: "+ d.getScore(), WIDTH - 3*X_OFFSET, HEIGHT - Y_OFFSET + LINE_HEIGHT);
+        ArrayList<Card> community = round.getCommunity();
+
+        for (int i = 0; i < community.size(); i++){
+            community.get(i).drawCard(g, FIRST_CARD_X + (i * (BUFFER + Card.WIDTH)), CARDS_Y, this);
 
         }
 
+        paintStringInBox(g,"Pot: " + round.getPot(), CARDS_Y - 60, 10);
 
-             */
+        ArrayList<Player> activePlayers = round.getActivePlayers();
+
+
+        for (Player p: activePlayers) {
+
+            p.drawPlayer(g, this);
+        }
+
+
+
     }
 
+    public static void paintStringInBox(Graphics g, String toPrint, int y, int bufferAmt){
+
+        int str_length = g.getFontMetrics().stringWidth(toPrint);
+        int str_height = g.getFontMetrics().getHeight();
+
+        g.setColor(Color.DARK_GRAY);
+        g.fillRoundRect((WINDOW_WIDTH - str_length) / 2 - bufferAmt, y - str_height, str_length + bufferAmt * 2,
+                str_height + bufferAmt, 10, 10);
+
+        g.setColor(Color.WHITE);
+        g.drawString(toPrint, (WINDOW_WIDTH -  str_length) / 2, y);
 
 
+    }
 
 
 }

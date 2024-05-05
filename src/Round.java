@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -5,24 +6,21 @@ import java.util.Comparator;
 public class Round {
 
 
-    private ArrayList<Player> activePlayers;
-    private final Player[] permanentPlayers;
     private int pot;
+    private Player[] permanentPlayers;
+    private ArrayList<Player> activePlayers;
     private ArrayList<Card> community;
+
+    public static final int B = 0, SB = 1, BB = 2, UTG =3;
     private Deck deck;
-
-    public static final int SB = 0, BB = 1, UTG = 2;
-
-
 
     public Round(Player[] players) {
 
         permanentPlayers = players;
-        activePlayers = new ArrayList<Player>();
-        this.deck = new Deck();
-        community = new ArrayList<Card>();
 
-        //reset();
+        activePlayers = new ArrayList<>();
+        community = new ArrayList<>();
+        deck = new Deck();
     }
 
     public void deal(){
@@ -144,6 +142,7 @@ public class Round {
     /*** given a starting position and call amount, go around the table and allow each player to check/call/raise ***/
     public void tableAction (int callAmount, int startingPlayer){
 
+
         System.out.println(callAmount + " to stay-in");
 
 
@@ -207,4 +206,24 @@ public class Round {
         System.out.println("Winner:" + winner.getName());
     }
 
+    public ArrayList<Player> getActivePlayers() {
+        return activePlayers;
+    }
+
+
+    public int getPot() {
+        return pot;
+    }
+
+    public ArrayList<Card> getCommunity() {
+        return community;
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public void addWindow(GameView window){
+        this.window = window;
+    }
 }

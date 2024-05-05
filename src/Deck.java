@@ -27,7 +27,9 @@ public class Deck {
             for (String suit: SUITS) {
 
                 // Adds new card object to deck
-                deck.add(new Card(RANKS[i], suit, SCORE[i], deck.size()));
+                // deck.size + 1 accounts for non-zero indexed rss images
+
+                deck.add(new Card(RANKS[i], suit, SCORE[i], deck.size() + 1));
             }
         }
 

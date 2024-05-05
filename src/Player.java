@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -11,15 +12,22 @@ public class Player {
     private ArrayList<Card> holeCards;
 
     private Scanner input;
+    private int x, y;
+
+    private boolean hastheAction = false;
 
 
-    public Player(String name, int chips) {
+    public Player(String name, int chips, int x, int y) {
+        this.x = x;
+        this.y = y;
+
         this.name = name;
         this.bank = chips;
         this.holeCards = new ArrayList<>();
 
         //TODO: remove
         this.input = new Scanner(System.in);
+
     }
 
 
@@ -52,8 +60,6 @@ public class Player {
 
         //TODO: impement keylistner
 
-
-
         if (callAmount - potInvestment > bank){
             System.out.println("Invalid amount, auto folding");
             return Game.FOLD;
@@ -70,6 +76,7 @@ public class Player {
 
                 case "F":
                     System.out.println(getName() + " Folded");
+                    hastheAction = false;
                     return Game.FOLD;
                 case "C":
 
@@ -79,7 +86,7 @@ public class Player {
                     else {
                         System.out.println(getName() + " Calls for $" + (callAmount - potInvestment));
                     }
-
+                    hastheAction = false;
                     return Game.CHECK_CALL;
 
 
@@ -109,6 +116,7 @@ public class Player {
                     }
 
                     System.out.println(getName() + " Raises");
+                    hastheAction = false;
                     return raiseAmount;
             }
         }
@@ -144,4 +152,21 @@ public class Player {
         handStrength = Calc.evalPlayer(holeCards, community);
         return handStrength;
     }
+
+    public void drawPlayer(Graphics g, GameView view){
+
+        g.drawString(name + " @ " + bank, x, y);
+
+
+        for (int i = 0; i < holeCards.size(); i++){
+            if(hastheAction) {
+                holeCards.get(i).drawCard(g, x + (i * (GameView.BUFFER + Card.WIDTH)), y + GameView.BUFFER, view);
+            } else{
+                Card.drawFaceDown(g, x + (i * (GameView.BUFFER + Card.WIDTH)), y + GameView.BUFFER, view);
+            }
+
+        }
+
+    }
+
 }
