@@ -50,28 +50,15 @@ public class GameView extends JFrame{
         //Draw the deck
        // g.drawImage(back, deck_x, cards_y, test_width, test_height, this);
 
-        switch (game.getState()){
+        switch (game.getState()) {
 
             case Game.NEW_ROUND:
                 paintNewGameScreen(g);
                 break;
-            case Game.DEAL:
-                paintDeal(g);
-                break;
-            case Game.PRE_FLOP:
+            default:
                 paintBoard(g);
-                paintStreet(g, game.getState());
-                break;
-            case Game.FLOP:
-            case Game.TURN:
-            case Game.RIVER:
-                paintStreet(g, game.getState());
-                break;
-            case Game.SHOWDOWN:
-                paintShowdown(g);
                 break;
         }
-
     }
 
     private void paintNewGameScreen(Graphics g) {
@@ -101,8 +88,6 @@ public class GameView extends JFrame{
         //Paint Deck
         Card.drawFaceDown(g, DECK_X, CARDS_Y, this);
 
-
-
         ArrayList<Card> community = round.getCommunity();
 
         for (int i = 0; i < community.size(); i++){
@@ -118,9 +103,6 @@ public class GameView extends JFrame{
         for (Player p: activePlayers) {
             p.drawPlayer(g, this);
         }
-
-
-
     }
 
     public static void paintStringInBox(Graphics g, String toPrint, int y, int bufferAmt){

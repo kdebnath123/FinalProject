@@ -24,22 +24,17 @@ public class Round {
         deck = new Deck();
     }
 
-    /*public void deal(){
-
-        System.out.println("Now dealing:");
-
+    public void deal() {
         // Post big and small blinds
-        pot += activePlayers.get(BB).bet(Game.BIG_BLIND );
+        pot += activePlayers.get(BB).bet(Game.BIG_BLIND);
         pot += activePlayers.get(SB).bet(Game.BIG_BLIND / 2);
-        System.out.println("Pot is: $" + pot);
 
         // deal two cards to each player starting with SB
         for (int i = 0; i < activePlayers.size(); i++) {
             activePlayers.get(i).receiveCards(deck.deal());
             activePlayers.get(i).receiveCards(deck.deal());
-            System.out.println(activePlayers.get(i));
         }
-    }*/
+    }
 
 
     /*public void preFlop(){
@@ -49,11 +44,6 @@ public class Round {
         System.out.println("Pre-flop: " + pot);
     }*/
     public void flop(){
-
-        for (Player p: activePlayers){
-            p.resetPotInvestment();
-        }
-
         // Burn
         deck.deal();
 
@@ -61,53 +51,24 @@ public class Round {
         community.add(deck.deal());
         community.add(deck.deal());
 
-        System.out.println("Flop:");
-
-        System.out.println(community);
-
-        //tableAction(0, SB);
-
-        System.out.println("Total Pot:" + pot);
-
+        System.out.println("Flop:  " + community);
     }
     public void turn(){
 
-        for (Player p: activePlayers){
-            p.resetPotInvestment();
-        }
         // Burn
         deck.deal();
 
         community.add(deck.deal());
 
-        System.out.println("Turn:");
-
-        System.out.println(community);
-
-        //tableAction(0, SB);
-
-        System.out.println("Total Pot:" + pot);
-
+        System.out.println("Turn: " + community);
     }
     public void river(){
-
-        for (Player p: activePlayers){
-            p.resetPotInvestment();
-        }
-
         // Burn
         deck.deal();
 
         community.add(deck.deal());
 
-        System.out.println("River:");
-
-        System.out.println(community);
-
-        //tableAction(0, SB);
-
-        System.out.println("Total Pot:" + pot);
-
+        System.out.println("River: " + community);
     }
 
     public void showdown() {
@@ -115,12 +76,12 @@ public class Round {
         int max = Calc.MISS;
         // calc each player and find the best one
         for (Player p: activePlayers) {
+            //Show all hands
+            p.setTheAction(true);
+
             max = Math.max(p.calcHandStrength(community), max);
-            System.out.println(p.getHoleCards());
-            System.out.println(p.getName() + " has " + p.getHandStrength());
         }
 
-        System.out.println("Max hand: " + max);
 
         int numWinners = 0;
         for (Player p: activePlayers) {
@@ -134,6 +95,7 @@ public class Round {
                 winsHand(p, pot / numWinners);
             }
         }
+        resetPot();
     }
     // Remove the first element of the array and move to last position which shifts everything, saves many many math operonds
     public void moveButton(){
@@ -191,16 +153,16 @@ public class Round {
         activePlayers.addAll(Arrays.asList(permanentPlayers));
         moveButton();
 
-        pot = 0;
+        this.resetPot();
 
 
         for (Player p: activePlayers) {
             p.resetPotInvestment();
             p.clearHoleCards();
         }
+
         community.clear();
         deck.shuffle();
-
     }
 
     // Controls what happens when someone wins
@@ -237,5 +199,11 @@ public class Round {
 
     public void resetPot() {
         pot = 0;
+    }
+
+    public void resetPlayerInvestment() {
+        for (Player p: activePlayers){
+            p.resetPotInvestment();
+        }
     }
 }

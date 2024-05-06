@@ -84,6 +84,9 @@ public class Game implements KeyListener {
                 break;
 
             case PRE_FLOP:
+            case FLOP:
+            case TURN:
+            case RIVER:
                 activePlayer = round.getActivePlayers().get(activeSeat);
                 activePlayer.setTheAction(true);
                 window.repaint();
@@ -95,17 +98,9 @@ public class Game implements KeyListener {
                         action(e.getKeyChar() + "");
                 }
                 break;
-            case FLOP:
-                setState(FLOP);
-                break;
-            case TURN:
-                setState(TURN);
-                break;
-            case RIVER:
-                setState(RIVER);
-                break;
             case SHOWDOWN:
                 setState(SHOWDOWN);
+                break;
         }
 
 
@@ -165,8 +160,8 @@ public class Game implements KeyListener {
         }
 
         activePlayer.setTheAction(false);
+        endStreet();
         window.repaint();
-        endPreFlop();
     }
 
     public int getState() {
@@ -175,24 +170,29 @@ public class Game implements KeyListener {
 
     public void setState(int gameState) {
 
+        System.out.println("Moving to " + gameState);
+
         this.state = gameState;
         switch (gameState){
             case DEAL:
-                reset();
-                deal();
+                round.reset();
+                round.deal();
                 break;
 
             case PRE_FLOP:
-                startPreFlop();
+                startStreet(BIG_BLIND, Round.UTG);
                 break;
             case FLOP:
                 round.flop();
+                startStreet(0, Round.SB);
                 break;
             case TURN:
                 round.turn();
+                startStreet(0, Round.SB);
                  break;
             case RIVER:
                 round.river();
+                startStreet(0, Round.SB);
                 break;
             case SHOWDOWN:
                 round.showdown();
@@ -202,19 +202,19 @@ public class Game implements KeyListener {
     }
 
 
-
-    public void startPreFlop(){
+    public void startStreet(int callAmount, int activeSeat){
         // Starting with UTG give each player the action, allow each player to see their cards
-        playersToAct = round.getActivePlayers().size();
-        callAmount = BIG_BLIND;
-        activeSeat = Round.UTG;
+        playersToAct = round.getActivePlayers().size() - 1;
+        this.callAmount = callAmount;
+        this.activeSeat = activeSeat;
     }
 
     // Called after player is done moving
-    public boolean endPreFlop(){
-
+    public boolean endStreet(){
         if(playersToAct == 0){
-            System.out.println("Pre-flop: " + round.getPot());
+            System.out.println("Street pot: " + round.getPot());
+            round.resetPlayerInvestment();
+            setState(getState() + 1);
             return true;
         }
         else{
@@ -222,90 +222,6 @@ public class Game implements KeyListener {
             playersToAct--;
         }
         return false;
-
-    }
-
-
-
-
-
-
-
-
-    /*public void tableAction (int callAmount, int startingPlayer){
-        ;
-        System.out.println(callAmount + " to stay-in");
-
-        // Starting with given player give, each player the action
-
-        int currentSeat = startingPlayer;
-        for (int i = 0, n = round.getActivePlayers().size(); i < n; i++) {
-
-
-            if(round.getActivePlayers().size() == 1){
-                //winsHand(activePlayers.getFirst(), pot);
-                return;
-            }
-
-            currentSeat = (currentSeat) % round.getActivePlayers().size();
-            Player currentPlayer = round.getActivePlayers().get(currentSeat);
-            currentPlayer.setTheAction(true);
-            window.repaint();
-
-
-            int action = currentPlayer.action(callAmount);
-
-            switch (action) {
-
-                case Game.FOLD:
-                    round.getActivePlayers().remove(currentSeat);
-                    break;
-
-                case Game.CHECK_CALL:
-                    round.increasePot(currentPlayer.bet(callAmount - currentPlayer.getPotInvestment()));
-                    currentSeat++;
-                    break;
-
-                default:
-                    round.increasePot(currentPlayer.bet(action + callAmount - currentPlayer.getPotInvestment()));
-                    tableAction(action + callAmount, currentSeat + 1);
-                    return;
-            }
-
-            currentPlayer.setTheAction(false);
-            window.repaint();
-        }
-    }
-
-     */
-
-    public void deal(){
-
-        // Post big and small blinds
-        round.increasePot(round.getActivePlayers().get(Round.BB).bet(Game.BIG_BLIND ));
-        round.increasePot(round.getActivePlayers().get(Round.SB).bet(Game.BIG_BLIND / 2));
-
-        // deal two cards to each player starting with SB
-        for (int i = 0; i < round.getActivePlayers().size(); i++) {
-            round.getActivePlayers().get(i).receiveCards(round.getDeck().deal());
-            round.getActivePlayers().get(i).receiveCards(round.getDeck().deal());
-        }
-    }
-
-    public void reset(){
-        round.getActivePlayers().clear();
-        round.resetPlayers(players);
-        round.moveButton();
-
-        round.resetPot();
-
-
-        for (Player p: round.getActivePlayers()) {
-            p.resetPotInvestment();
-            p.clearHoleCards();
-        }
-        round.getCommunity().clear();
-        round.getDeck().shuffle();
     }
 
     @Override
