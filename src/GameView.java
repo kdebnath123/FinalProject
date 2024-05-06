@@ -42,6 +42,10 @@ public class GameView extends JFrame{
         // New Game Screen
         // Resets background
 
+        // TODO: add better start-up screen
+        // TODO: add button indicator
+        // TODO: add text with player actions
+        // TODO: add menu screen with action options
 
         g.setColor(Color.white);
 

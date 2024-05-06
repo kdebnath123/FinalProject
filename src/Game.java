@@ -28,8 +28,6 @@ public class Game implements KeyListener {
 
     Player[] players;
 
-    // TODO: once each round is finished then move up to game
-
     public Game(){
 
         players = new Player[4];
@@ -130,7 +128,7 @@ public class Game implements KeyListener {
                     break;
 
 
-
+                // TODO: Add raises (most likely solved by starting new street
                 case "r":
                     int raiseAmount = 100;
                     /*
@@ -213,6 +211,13 @@ public class Game implements KeyListener {
 
     // Called after player is done moving
     public boolean endStreet(){
+
+        // TODO: Create fold out game state for when hand is won via "bluff"
+        if(round.getActivePlayers().size() == 1){
+
+            return true;
+        }
+
         if(playersToAct == 0){
             System.out.println("Street pot: " + round.getPot());
             round.resetPlayerInvestment();
