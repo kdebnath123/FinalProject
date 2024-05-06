@@ -8,7 +8,7 @@ public class Round {
 
 
     private int pot;
-    private Player[] permanentPlayers;
+    private ArrayList<Player> permanentPlayers;
     private ArrayList<Player> activePlayers;
     private ArrayList<Card> community;
 
@@ -17,7 +17,7 @@ public class Round {
 
     public Round(Player[] players) {
 
-        permanentPlayers = players;
+        permanentPlayers = new ArrayList<>(List.of(players));
 
         activePlayers = new ArrayList<>();
         community = new ArrayList<>();
@@ -96,10 +96,11 @@ public class Round {
             }
         }
         resetPot();
+
     }
     // Remove the first element of the array and move to last position which shifts everything, saves many many math operonds
     public void moveButton(){
-        activePlayers.add(activePlayers.remove(SB));
+        permanentPlayers.add(permanentPlayers.remove(SB));
     }
 
     /*** given a starting position and call amount, go around the table and allow each player to check/call/raise ***/
@@ -150,8 +151,9 @@ public class Round {
 
     public void reset(){
         activePlayers.clear();
-        activePlayers.addAll(Arrays.asList(permanentPlayers));
         moveButton();
+        activePlayers.addAll(permanentPlayers);
+
 
         this.resetPot();
 
@@ -159,6 +161,7 @@ public class Round {
         for (Player p: activePlayers) {
             p.resetPotInvestment();
             p.clearHoleCards();
+            p.setTheAction(false);
         }
 
         community.clear();

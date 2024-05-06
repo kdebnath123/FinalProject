@@ -34,10 +34,10 @@ public class Game implements KeyListener {
 
         players = new Player[4];
 
-        players[0] = new Player("B", 1000, PLAYER_X[0], PLAYER_Y[0]);
-        players[1] = new Player("SB", 1000, PLAYER_X[1], PLAYER_Y[1]);
-        players[2] = new Player("BB", 1000, PLAYER_X[2], PLAYER_Y[2]);
-        players[3] = new Player("UTG", 1000, PLAYER_X[3], PLAYER_Y[3]);
+        players[0] = new Player("D", 1000, PLAYER_X[0], PLAYER_Y[0]);
+        players[1] = new Player("A", 1000, PLAYER_X[1], PLAYER_Y[1]);
+        players[2] = new Player("B", 1000, PLAYER_X[2], PLAYER_Y[2]);
+        players[3] = new Player("C", 1000, PLAYER_X[3], PLAYER_Y[3]);
 
 
         state = NEW_ROUND;
@@ -99,7 +99,9 @@ public class Game implements KeyListener {
                 }
                 break;
             case SHOWDOWN:
-                setState(SHOWDOWN);
+                if(e.getKeyCode() == KeyEvent.VK_N){
+                    this.setState(NEW_ROUND);
+                }
                 break;
         }
 
