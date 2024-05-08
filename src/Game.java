@@ -16,7 +16,12 @@ public class Game implements KeyListener {
 
 
     public static final int[] PLAYER_X = {790, 600, 300, 100},
-                              PLAYER_Y = {225, 365, 365, 225};
+                              PLAYER_Y = {225, 365, 365, 225},
+
+                              BUTTON_X = {760, 570, 270, 210};
+
+
+
     public static final int NEW_ROUND = 0,
 
             DEAL = 1,
@@ -24,7 +29,8 @@ public class Game implements KeyListener {
             FLOP = 3,
             TURN = 4,
             RIVER = 5,
-            SHOWDOWN = 6;
+            SHOWDOWN = 6,
+            STEAL = 7;
 
     Player[] players;
 
@@ -32,10 +38,10 @@ public class Game implements KeyListener {
 
         players = new Player[4];
 
-        players[0] = new Player("D", 1000, PLAYER_X[0], PLAYER_Y[0]);
-        players[1] = new Player("A", 1000, PLAYER_X[1], PLAYER_Y[1]);
-        players[2] = new Player("B", 1000, PLAYER_X[2], PLAYER_Y[2]);
-        players[3] = new Player("C", 1000, PLAYER_X[3], PLAYER_Y[3]);
+        players[0] = new Player("D", 1000, PLAYER_X[0], PLAYER_Y[0], BUTTON_X[0]);
+        players[1] = new Player("A", 1000, PLAYER_X[1], PLAYER_Y[1], BUTTON_X[1]);
+        players[2] = new Player("B", 1000, PLAYER_X[2], PLAYER_Y[2], BUTTON_X[2]);
+        players[3] = new Player("C", 1000, PLAYER_X[3], PLAYER_Y[3], BUTTON_X[3]);
 
 
         state = NEW_ROUND;
@@ -97,9 +103,8 @@ public class Game implements KeyListener {
                 }
                 break;
             case SHOWDOWN:
-                if(e.getKeyCode() == KeyEvent.VK_N){
-                    this.setState(NEW_ROUND);
-                }
+            case STEAL:
+                this.setState(NEW_ROUND);
                 break;
         }
 
@@ -118,17 +123,16 @@ public class Game implements KeyListener {
                 case "c":
 
                     if (callAmount == activePlayer.getPotInvestment()){
-                        System.out.println(activePlayer.getName() + " Checks");
+                        activePlayer.setAction("Check");
                     }
                     else {
-                        System.out.println(activePlayer.getName() + " Calls for $" + (callAmount - activePlayer.getPotInvestment()));
+                        activePlayer.setAction("Call for $ " + (callAmount - activePlayer.getPotInvestment()));
                     }
                     round.increasePot(activePlayer.bet(callAmount - activePlayer.getPotInvestment()));
                     activeSeat++;
                     break;
 
 
-                // TODO: Add raises (most likely solved by starting new street
                 case "r":
                     int raiseAmount = 100;
                     /*
@@ -154,8 +158,9 @@ public class Game implements KeyListener {
                     }
 
                      */
-
+                    activePlayer.setAction("Raises $" + 100);
                     round.increasePot(activePlayer.bet(raiseAmount + callAmount - activePlayer.getPotInvestment()));
+                    startStreet(callAmount + raiseAmount, (activeSeat + 1) % round.getActivePlayers().size());
                     break;
         }
 
@@ -173,6 +178,7 @@ public class Game implements KeyListener {
         System.out.println("Moving to " + gameState);
 
         this.state = gameState;
+
         switch (gameState){
             case DEAL:
                 round.reset();
@@ -197,6 +203,9 @@ public class Game implements KeyListener {
             case SHOWDOWN:
                 round.showdown();
                 break;
+            case STEAL:
+                round.steal();
+                break;
         }
         window.repaint();
     }
@@ -210,25 +219,24 @@ public class Game implements KeyListener {
     }
 
     // Called after player is done moving
-    public boolean endStreet(){
+    public void endStreet(){
 
-        // TODO: Create fold out game state for when hand is won via "bluff"
         if(round.getActivePlayers().size() == 1){
-
-            return true;
+            setState(STEAL);
+            return;
         }
 
         if(playersToAct == 0){
-            System.out.println("Street pot: " + round.getPot());
             round.resetPlayerInvestment();
+            round.resetPlayerAction();
             setState(getState() + 1);
-            return true;
         }
         else{
             activeSeat = activeSeat % round.getActivePlayers().size();
             playersToAct--;
         }
-        return false;
+
+
     }
 
     @Override

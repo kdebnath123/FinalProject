@@ -50,8 +50,6 @@ public class Round {
         community.add(deck.deal());
         community.add(deck.deal());
         community.add(deck.deal());
-
-        System.out.println("Flop:  " + community);
     }
     public void turn(){
 
@@ -59,16 +57,12 @@ public class Round {
         deck.deal();
 
         community.add(deck.deal());
-
-        System.out.println("Turn: " + community);
     }
     public void river(){
         // Burn
         deck.deal();
 
         community.add(deck.deal());
-
-        System.out.println("River: " + community);
     }
 
     public void showdown() {
@@ -98,56 +92,20 @@ public class Round {
         resetPot();
 
     }
+
+    public void steal() {
+
+
+        winsHand(activePlayers.getFirst(), pot);
+        resetPot();
+
+    }
+
+
     // Remove the first element of the array and move to last position which shifts everything, saves many many math operonds
     public void moveButton(){
         permanentPlayers.add(permanentPlayers.remove(SB));
     }
-
-    /*** given a starting position and call amount, go around the table and allow each player to check/call/raise ***/
-    /*public void tableAction (int callAmount, int startingPlayer){
-
-
-        System.out.println("in round");
-        System.out.println(callAmount + " to stay-in");
-
-        // Starting with given player give, each player the action
-
-        int currentSeat = startingPlayer;
-        for (int i = 0, n = activePlayers.size(); i < n; i++) {
-
-
-            if(activePlayers.size() == 1){
-                winsHand(activePlayers.getFirst(), pot);
-                return;
-            }
-
-
-            currentSeat = (currentSeat) % activePlayers.size();
-            Player currentPlayer = activePlayers.get(currentSeat);
-
-
-            int action = currentPlayer.action(callAmount);
-
-            switch (action) {
-
-                case Game.FOLD:
-                    activePlayers.remove(currentSeat);
-                    break;
-
-                case Game.CHECK_CALL:
-                    pot += currentPlayer.bet(callAmount - currentPlayer.getPotInvestment());
-                    currentSeat++;
-                    break;
-
-                default:
-                    pot += currentPlayer.bet(action + callAmount - currentPlayer.getPotInvestment());
-                    tableAction(action + callAmount, currentSeat + 1);
-                    return;
-            }
-        }
-    }
-
-     */
 
     public void reset(){
         activePlayers.clear();
@@ -162,6 +120,7 @@ public class Round {
             p.resetPotInvestment();
             p.clearHoleCards();
             p.setTheAction(false);
+            p.resetAction();
         }
 
         community.clear();
@@ -207,6 +166,19 @@ public class Round {
     public void resetPlayerInvestment() {
         for (Player p: activePlayers){
             p.resetPotInvestment();
+        }
+    }
+
+    public int getButtonX(){
+        return  permanentPlayers.getLast().getButtonX();
+    }
+    public int getButtonY(){
+        return  permanentPlayers.getLast().getY();
+    }
+
+    public void resetPlayerAction() {
+        for (Player p: activePlayers) {
+            p.resetAction();
         }
     }
 }

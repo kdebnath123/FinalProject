@@ -39,20 +39,8 @@ public class GameView extends JFrame{
     }
 
     public void paint(Graphics g) {
-        // New Game Screen
-        // Resets background
-
-        // TODO: add better start-up screen
-        // TODO: add button indicator
-        // TODO: add text with player actions
-        // TODO: add menu screen with action options
 
         g.setColor(Color.white);
-
-        //g.drawImage(background, 0, 0,WINDOW_WIDTH, WINDOW_HEIGHT, this);
-
-        //Draw the deck
-       // g.drawImage(back, deck_x, cards_y, test_width, test_height, this);
 
         switch (game.getState()) {
 
@@ -68,18 +56,10 @@ public class GameView extends JFrame{
     private void paintNewGameScreen(Graphics g) {
 
 
-        g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        g.drawImage(background, 0, 0,WINDOW_WIDTH, WINDOW_HEIGHT, this);
 
-        paintStringInBox(g, "[N]ew Game", (int)(WINDOW_HEIGHT * .75), 25);
-    }
-
-    private void paintDeal(Graphics g) {
-        paintBoard(g);
-    }
-    private void paintStreet(Graphics g, int gameState) {
-        paintBoard(g);
-    }
-    private void paintShowdown(Graphics g) {
+        paintStringInBox(g, "[N]ew Round", (WINDOW_WIDTH - g.getFontMetrics().stringWidth("[N]ew Round")) / 2,
+                (int)(WINDOW_HEIGHT * .75), BUFFER * 4);
     }
 
     public void paintBoard(Graphics g){
@@ -88,38 +68,58 @@ public class GameView extends JFrame{
         g.setColor(Color.WHITE);
         g.drawImage(background, 0, 0,WINDOW_WIDTH, WINDOW_HEIGHT, this);
 
+        paintStringInBox(g, "Pot: " + round.getPot(), (WINDOW_WIDTH - g.getFontMetrics().stringWidth("Pot: " + round.getPot())) / 2,
+                CARDS_Y - 60, BUFFER * 2);
+
+
+
+        ArrayList<Player> activePlayers = round.getActivePlayers();
+
+        for (Player p: activePlayers) {
+            p.drawPlayer(g, this);
+        }
+        paintButton(g);
+
 
         //Paint Deck
         Card.drawFaceDown(g, DECK_X, CARDS_Y, this);
 
         ArrayList<Card> community = round.getCommunity();
 
+        // Draw burn pile
+        if(!community.isEmpty()){
+            Card.drawFaceDown(g, DECK_X + (6 * (BUFFER + Card.WIDTH)), CARDS_Y, this);
+        }
+
+
         for (int i = 0; i < community.size(); i++){
             community.get(i).drawCard(g, FIRST_CARD_X + (i * (BUFFER + Card.WIDTH)), CARDS_Y, this);
 
         }
-
-        paintStringInBox(g,"Pot: " + round.getPot(), CARDS_Y - 60, 10);
-
-        ArrayList<Player> activePlayers = round.getActivePlayers();
-
-
-        for (Player p: activePlayers) {
-            p.drawPlayer(g, this);
-        }
     }
 
-    public static void paintStringInBox(Graphics g, String toPrint, int y, int bufferAmt){
+    public static void paintStringInBox(Graphics g, String toPrint, int x, int y, int bufferAmt){
+
+
 
         int str_length = g.getFontMetrics().stringWidth(toPrint);
         int str_height = g.getFontMetrics().getHeight();
 
         g.setColor(Color.DARK_GRAY);
-        g.fillRoundRect((WINDOW_WIDTH - str_length) / 2 - bufferAmt, y - str_height, str_length + bufferAmt * 2,
-                str_height + bufferAmt, 10, 10);
+        g.fillRoundRect(x - bufferAmt, y - str_height, str_length + bufferAmt * 2,
+                str_height + bufferAmt, 5, 5);
 
         g.setColor(Color.WHITE);
-        g.drawString(toPrint, (WINDOW_WIDTH -  str_length) / 2, y);
+        g.drawString(toPrint, x, y);
+    }
+
+    public void paintButton(Graphics g){
+
+        int str_length = g.getFontMetrics().stringWidth("D");
+        g.setColor(Color.WHITE);
+        g.fillOval(round.getButtonX() - (str_length / 2), round.getButtonY() - 15, 20, 20);
+        g.setColor(Color.BLACK);
+        g.drawString("D", round.getButtonX(), round.getButtonY());
     }
 
 

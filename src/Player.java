@@ -9,14 +9,17 @@ public class Player {
     private int handStrength;
     private int potInvestment;
     private ArrayList<Card> holeCards;
-    private int x, y;
+    private int x, y, buttonX;
+    private String action;
 
     private boolean hastheAction = false;
 
 
-    public Player(String name, int chips, int x, int y) {
+    public Player(String name, int chips, int x, int y, int buttonX) {
         this.x = x;
         this.y = y;
+        this.buttonX = buttonX;
+        this.action = null;
 
         this.name = name;
         this.bank = chips;
@@ -48,73 +51,6 @@ public class Player {
         return holeCards;
     }
 
-
-    // return amt to increase pot by
-    public int action(int callAmount, String c) {
-
-
-
-        //TODO: impement keylistner
-
-        if (callAmount - potInvestment > bank){
-            System.out.println("Invalid amount, auto folding");
-            return Game.FOLD;
-        }
-
-        while(true){
-
-            //System.out.println("Enter action: [F]old, [C]heck/[C]all, [R]aise ");
-            System.out.print(getName() + "'s action: ");
-
-
-            switch (c){
-
-                case "F":
-                    System.out.println(getName() + " Folded");
-                    return Game.FOLD;
-                case "C":
-
-                    if (callAmount == potInvestment){
-                        System.out.println(getName() + " Checks");
-                    }
-                    else {
-                        System.out.println(getName() + " Calls for $" + (callAmount - potInvestment));
-                    }
-                    return Game.CHECK_CALL;
-
-
-
-                case "R":
-                    int raiseAmount = 100;
-                    /*
-                    if(callAmount + Game.BIG_BLIND > bank){
-                        System.out.println("Not enough $ to raise, auto-calling");
-                    }
-
-                    // Forces user to input a number between Call Amount + BB and bankroll
-                    while (true) {
-                        // Try/Catch learned from Stack Overflow
-                        try {
-                            System.out.print("Raise a valid amount (min raise BB): ");
-                            raiseAmount = input.nextInt();
-
-                            if (raiseAmount >= Game.BIG_BLIND && raiseAmount <= bank - callAmount) {
-                                input.nextLine();
-                                break;
-                            }
-                        }
-                        catch (InputMismatchException e) {
-                            input.next();
-                        }
-                    }
-
-                     */
-
-                    System.out.println(getName() + " Raises");
-                    return raiseAmount;
-            }
-        }
-    }
 
     public boolean hasTheAction() {
         return hastheAction;
@@ -158,10 +94,24 @@ public class Player {
 
     public void drawPlayer(Graphics g, GameView view){
 
-        g.drawString(name + " @ " + bank, x, y);
+        // Informs other players about action made
+        if (action != null){
+            g.drawString(action, x, y - 24);
+            view.paintStringInBox(g, action, x, y -24, GameView.BUFFER);
+        }
+
+        g.setColor(Color.white);
+        g.drawString(name + " @ $" + bank, x, y);
 
         for (int i = 0; i < holeCards.size(); i++){
             if(hastheAction) {
+
+                g.setColor(Color.YELLOW);
+                g.drawString("[R]aise", 25,  100);
+                g.drawString("[C]heck/[C]all", 25, 120);
+                g.drawString("[F]old", 25, 140);
+
+
                 holeCards.get(i).drawCard(g, x + (i * (GameView.BUFFER + Card.WIDTH)), y + GameView.BUFFER, view);
             } else{
                 Card.drawFaceDown(g, x + (i * (GameView.BUFFER + Card.WIDTH)), y + GameView.BUFFER, view);
@@ -171,4 +121,23 @@ public class Player {
 
     }
 
+    public void setAction(String action){
+        this.action = action;
+    }
+
+    public void resetAction(){
+        this.action = null;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getButtonX() {
+        return buttonX;
+    }
 }
