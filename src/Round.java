@@ -1,20 +1,21 @@
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
+/** Controls each round of the game **/
 public class Round {
 
-
+    /** Player data **/
     private int pot;
     private ArrayList<Player> permanentPlayers;
     private ArrayList<Player> activePlayers;
-    private ArrayList<Card> community;
 
     public static final int B = 3, SB = 0, BB = 1, UTG =2;
-    private Deck deck;
 
+    /** Card data **/
+    private Deck deck;
+    private ArrayList<Card> community;
+
+    /** Constructor **/
     public Round(Player[] players) {
 
         permanentPlayers = new ArrayList<>(List.of(players));
@@ -24,6 +25,7 @@ public class Round {
         deck = new Deck();
     }
 
+    /** Handles the deal actions **/
     public void deal() {
         // Post big and small blinds
         pot += activePlayers.get(BB).bet(Game.BIG_BLIND);
@@ -36,39 +38,42 @@ public class Round {
         }
     }
 
-
-    /*public void preFlop(){
-        // Starting with UTG give each player the action, allow each player to see their cards
-        tableAction(Game.BIG_BLIND, UTG);
-
-        System.out.println("Pre-flop: " + pot);
-    }*/
+    /** Handles the flop **/
     public void flop(){
         // Burn
         deck.deal();
 
+        // Reveal 3 community cards
         community.add(deck.deal());
         community.add(deck.deal());
         community.add(deck.deal());
     }
+
+    /** Handles the turn **/
     public void turn(){
 
         // Burn
         deck.deal();
 
+        // Reveal another card
         community.add(deck.deal());
     }
+
+    /** Handles the flop **/
     public void river(){
         // Burn
         deck.deal();
 
+        // Reveals final card
         community.add(deck.deal());
     }
 
+    /** Handles the showdown **/
     public void showdown() {
 
         int max = Calc.MISS;
-        // calc each player and find the best one
+
+        // Calculate each player's best hand and find the winning hand
         for (Player p: activePlayers) {
             //Show all hands
             p.setTheAction(true);
@@ -76,7 +81,7 @@ public class Round {
             max = Math.max(p.calcHandStrength(community), max);
         }
 
-
+        // Count the number of winners
         int numWinners = 0;
         for (Player p: activePlayers) {
             if(p.getHandStrength() == max){
@@ -84,30 +89,42 @@ public class Round {
             }
         }
 
+        // Chop the pot based on winner amount
         for (Player p: activePlayers) {
             if(p.getHandStrength() == max){
                 winsHand(p, pot / numWinners);
             }
         }
+
         resetPot();
 
     }
 
+    /** Handles when a player steals the pot **/
     public void steal() {
 
-
+        // Gives the last player standing the pot
         winsHand(activePlayers.getFirst(), pot);
         resetPot();
 
     }
 
+    /** Gives chips to winning player **/
+    private void winsHand(Player winner, int amount) {
+        winner.addChips(amount);
+    }
 
-    // Remove the first element of the array and move to last position which shifts everything, saves many many math operonds
+
+    /** Moves the button each round **/
     public void moveButton(){
+        // Moves the first element to the back of the array, which 'shifts' everyone down
         permanentPlayers.add(permanentPlayers.remove(SB));
     }
 
+    /** Resets to be ready for next round of play**/
     public void reset(){
+
+        // Reload all players in
         activePlayers.clear();
         moveButton();
         activePlayers.addAll(permanentPlayers);
@@ -115,7 +132,7 @@ public class Round {
 
         this.resetPot();
 
-
+        // Reset each player
         for (Player p: activePlayers) {
             p.resetPotInvestment();
             p.clearHoleCards();
@@ -127,38 +144,7 @@ public class Round {
         deck.shuffle();
     }
 
-    // Controls what happens when someone wins
-    private void winsHand(Player winner, int amount) {
-        winner.addChips(amount);
-        System.out.println("Winner:" + winner.getName());
-    }
-
-    public ArrayList<Player> getActivePlayers() {
-        return activePlayers;
-    }
-
-
-    public int getPot() {
-        return pot;
-    }
-
-    public void increasePot(int value){
-        pot += value;
-    }
-
-    public ArrayList<Card> getCommunity() {
-        return community;
-    }
-
-    public Deck getDeck() {
-        return deck;
-    }
-
-
-    public void resetPlayers(Player[] players) {
-        activePlayers.addAll(List.of(players));
-    }
-
+    /** Helper reset methods */
     public void resetPot() {
         pot = 0;
     }
@@ -169,6 +155,26 @@ public class Round {
         }
     }
 
+    public void resetPlayerAction() {
+        for (Player p: activePlayers) {
+            p.resetAction();
+        }
+    }
+
+
+    /** Getters **/
+    public ArrayList<Player> getActivePlayers() {
+        return activePlayers;
+    }
+
+    public int getPot() {
+        return pot;
+    }
+
+    public ArrayList<Card> getCommunity() {
+        return community;
+    }
+
     public int getButtonX(){
         return  permanentPlayers.getLast().getButtonX();
     }
@@ -176,9 +182,8 @@ public class Round {
         return  permanentPlayers.getLast().getY();
     }
 
-    public void resetPlayerAction() {
-        for (Player p: activePlayers) {
-            p.resetAction();
-        }
+    /** Increases pot value */
+    public void increasePot(int value){
+        pot += value;
     }
 }

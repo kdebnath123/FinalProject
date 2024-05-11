@@ -1,6 +1,21 @@
 import java.util.ArrayList;
 
+/** Helper class in order to calculate the strength of players during showdown **/
+
+/** Hand strength is endcoded in a 6 digit number
+ *
+ *              __ __ __
+ *
+ *              The first 2 repersent the type of hand (ex trips
+ *              The second repersent of what (ex: trips of DIAMONDS)
+ *              The third repersents the kicker
+ *
+ * **/
+
+
 public class Calc {
+
+        /** Hand types **/
         public static final int ROYAL_FLUSH = 90000,
                                 STRAIGHT_FLUSH = 80000,
                                 QUADS = 70000,
@@ -13,36 +28,8 @@ public class Calc {
 
         public static final int MISS = -1, AS_PRIMARY = 100, AS_SECONDARY = 1;
 
-        // TODO: REMOVE TEST METHOD
-        public static void main(String[] args) {
 
-                ArrayList<Card> possibleHole = new ArrayList<>();
-                ArrayList<Card> possibleCommunity = new ArrayList<>();
-
-                /* // TEST WITH CERTIAN HAN
-                possibleHole.add(new Card("8", Deck.SUITS[1], 8));
-                possibleHole.add(new Card("7", Deck.SUITS[1], 7));
-                possibleCommunity.add(new Card("6", Deck.SUITS[0], 6));
-                possibleCommunity.add(new Card("5", Deck.SUITS[0], 5));
-                possibleCommunity.add(new Card("4", Deck.SUITS[0], 4));
-                possibleCommunity.add(new Card("3", Deck.SUITS[0], 3));
-                possibleCommunity.add(new Card("2", Deck.SUITS[0], 2));
-                */
-
-                Deck deck = new Deck();
-                deck.shuffle();
-
-
-                for (int i = 0; i < 5; i++) {
-                        possibleCommunity.add(deck.deal());
-                }
-                possibleHole.add(deck.deal());
-                possibleHole.add(deck.deal());
-
-                int result = Calc.evalPlayer(possibleHole, possibleCommunity);
-
-        }
-
+        /** Only public method which encodes hand into int **/
         public static int evalPlayer(ArrayList<Card> hole, ArrayList<Card> community){
                 //Combine hole and community cards
                 ArrayList<Card> total = new ArrayList<>();
@@ -71,10 +58,13 @@ public class Calc {
                 return max;
         }
 
+        /** Creates all unique 5 hards from 7 vards (7 choose 5) and stars each ArrayList as an Arrylist**/
         private static ArrayList<ArrayList<Card>> createCombinations(ArrayList<Card> SevenCard){
 
                 ArrayList<ArrayList<Card>> ordered = new ArrayList<>();
 
+                // Accomplishes 5 choose 7 by doing 2 choose 5
+                // removes all possible combos of 2 cards, leaving 5
                 for(int i = 0, n = SevenCard.size(); i < n; i++){
                         for(int j = i + 1; j < n; j++){
                                 ArrayList<Card> temp = new ArrayList<>(SevenCard);
@@ -142,6 +132,7 @@ public class Calc {
         }
 
 
+        /** Calcs the value of a sorted 5 card hand **/
         private static int calcValue(ArrayList<Card> fiveCard){
                 // check for straight flush or royal
                 int result = hasStraightOrRoyalFlush(fiveCard);
@@ -195,11 +186,7 @@ public class Calc {
                 return hasHighCard(fiveCard) * AS_PRIMARY;
         }
 
-        /**
-         * Checks for Royal or Straight Flush
-         * Exists when player has a flush and straight
-         * Royal iff Ace high straight + flush
-         * **/
+        /** Helper methods **/
         private static int hasStraightOrRoyalFlush(ArrayList<Card> total) {
 
 
@@ -226,7 +213,6 @@ public class Calc {
 
         }
 
-        /*** works **/
         private static int hasQuads(ArrayList<Card> total) {
 
                 int tripsResult = hasTrips(total);
@@ -272,7 +258,6 @@ public class Calc {
                 return FULL_HOUSE + (tripsCard * AS_PRIMARY) + (pairCard * AS_SECONDARY);
         }
 
-        /** Works **/
         private static int hasFlush(ArrayList<Card> total) {
 
                 String neededSuit = total.get(0).getSuit();
@@ -285,7 +270,6 @@ public class Calc {
 
                 return FLUSH + total.getFirst().getScore() * AS_PRIMARY;
         }
-        /** Works **/
         private static int hasStraight(ArrayList<Card> total) {
                 int highCard = total.get(0).getScore();
 
@@ -298,7 +282,6 @@ public class Calc {
 
                 return STRAIGHT + (total.getFirst().getScore() * AS_PRIMARY);
         }
-        /** Works **/
         private static int hasTrips(ArrayList<Card> total) {
 
                 for(int i = 0, n = total.size() - 2; i < n; i++){
@@ -314,7 +297,6 @@ public class Calc {
 
                 return MISS;
         }
-        /** Works **/
         private static int hasTwoPair(ArrayList<Card> total) {
 
                 // Check for pair
@@ -338,8 +320,9 @@ public class Calc {
                 return TWO_PAIR + (firstPairCard * AS_PRIMARY) + (secondPairCard * AS_SECONDARY);
         }
 
-        /** Returns the highest pair found **/
+
         private static int hasPair(ArrayList<Card> total) {
+                // Returns the highest pair found
                 for(int i = 0, n = total.size() - 1; i < n; i++){
 
                         if(total.get(i).getScore() == total.get(i + 1).getScore()){
@@ -362,7 +345,6 @@ public class Calc {
 
         /***
          * Removes all instances of a given card
-         * @return
          */
         private static ArrayList<Card> removeInstance(ArrayList<Card> total, int toRemove) {
 
